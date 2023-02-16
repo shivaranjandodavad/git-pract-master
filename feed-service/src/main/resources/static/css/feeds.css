@@ -1,0 +1,60 @@
+/* Styles for the pagination container */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Styles for the page index links */
+.pagination {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 10px;
+}
+
+.pagination a {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+/* Styles for the feed list */
+
+
+.feed-page {
+  scroll-snap-align: start;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.feed-page:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 768px) {
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pagination li {
+    margin: 10px;
+  }
+
+  .feed-page {
+    flex: 1 0 100%;
+    margin: 10px 0;
+    border-right: none;
+  }
+}

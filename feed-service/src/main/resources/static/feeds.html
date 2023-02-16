@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>ನಿಮ್ಮ ಆಪ್💛❤️</title>
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/feeds.css">
+</head>
+<body>
+<h1>ನಿಮ್ಮ ಆಪ್💛❤️</h1>
+<nav class="navbar">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+    <a href="feeds.html">Feeds</a>
+</nav>
+<!-- index.html -->
+
+<div class="pagination-container">
+    <ul class="pagination" id="page-index"></ul>
+</div>
+<style>
+  #feed-list > div {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  #page-index {
+    margin-bottom: 20px;
+  }
+
+  #page-index li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+</style>
+
+<div id="page-index"></div>
+<div id="feed-list"></div>
+<script>
+  const PAGE_SIZE = 5; // number of feeds to display per page
+  const apiUrl = 'http://localhost:9000/feeds';
+
+  let currentPage = 1;
+  let feeds = [];
+
+  // make a GET request to the API and retrieve the response
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      feeds = data;
+      const numPages = Math.ceil(feeds.length / PAGE_SIZE);
+
+      // create a page index with links to each page
+      const pageIndex = document.getElementById('page-index');
+      for (let i = 1; i <= numPages; i++) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#page-${i}`;
+        a.textContent = i;
+        li.appendChild(a);
+        pageIndex.appendChild(li);
+      }
+
+      // create a list of feeds for each page
+      for (let i = 0; i < numPages; i++) {
+        const page = i + 1;
+        const start = i * PAGE_SIZE;
+        const end = start + PAGE_SIZE;
+        const pageFeeds = feeds.slice(start, end);
+
+        const feedList = document.getElementById('feed-list');
+        const pageDiv = document.createElement('div');
+        pageDiv.id = `page-${page}`;
+
+        pageFeeds.forEach(feed => {
+          const feedDiv = document.createElement('div');
+          feedDiv.innerHTML = `
+            <h2>${feed.title}</h2>
+            <img src="${feed.url}" alt="${feed.title}">
+            <p>${feed.content}</p>
+            <p>Likes: ${feed.likes}</p>
+            <p>Shares: ${feed.shares}</p>
+          `;
+          pageDiv.appendChild(feedDiv);
+        });
+
+        feedList.appendChild(pageDiv);
+      }
+
+      // hide all page divs except for the selected one
+      const showPage = () => {
+        const pageId = location.hash;
+        const allPages = document.querySelectorAll('#feed-list > div');
+        allPages.forEach(page => {
+          page.style.display = 'none';
+        });
+        const selectedPage = document.querySelector(pageId);
+        selectedPage.style.display = 'block';
+        currentPage = parseInt(pageId.slice(6));
+      };
+
+      // call the showPage function on page load and whenever the URL fragment changes
+      window.addEventListener('load', showPage);
+      window.addEventListener('hashchange', showPage);
+    })
+    .catch(error => console.error(error));
+
+  // load the next page when the user is near the bottom of the current page
+  window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY;
+    const pageHeight = document.getElementById(`page-${currentPage}`).offsetHeight;
+    const windowHeight = window.innerHeight;
+    const bottomPosition = scrollPosition + windowHeight;
+    const pageBottom = pageHeight + pageIndex.offsetHeight;
+    const remainingHeight = pageBottom - bottomPosition;
+
+    if (remainingHeight < 100 && currentPage < Math.ceil(feeds.length / PAGE_SIZE)) {
+      currentPage++;
+      location.hash = `page-${currentPage}`;
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

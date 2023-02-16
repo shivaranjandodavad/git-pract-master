@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ನಿಮ್ಮ ಆಪ್💛❤️</title>
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+<!-- Add the website header -->
+<h1>ನಿಮ್ಮ ಆಪ್💛❤️</h1>
+<nav class="navbar">
+  <a href="#">Home</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Contact</a>
+  <a href="feeds.html">Feeds</a>
+</nav>
+<!-- Add the content section -->
+<div class="content">
+  <p>Karnataka is a state in the southwestern region of India. It is the eighth largest state by population and the ninth largest by area. Bangalore, also known as Bengaluru, is the capital city of Karnataka and is one of the largest cities in India. Karnataka is known for its rich cultural heritage, including historic sites like Hampi and the Mysore Palace, as well as its scenic beauty, such as the Western Ghats mountain range and the beaches of Udupi and Gokarna.</p>
+  <div id="slideshow">
+    <img src="img/car.jpg" width="1000" height="600" alt="Image 1">
+    <img src="img/manager.jpg" width="1000" height="600" alt="Image 2">
+    <img src="img/projects.jpeg" width="1000" height="600" alt="Image 3">
+    <!-- Add more images as needed -->
+  </div>
+</div>
+
+<!-- Add the navigation menu -->
+
+<!-- Add the footer -->
+<footer>
+  Copyright &copy; ನಿಮ್ಮ ಆಪ್💛❤️ 2023
+</footer>
+<script>
+      var slideIndex = 0;
+      showSlides();
+
+      function showSlides() {
+        var i;
+        var slides = document.getElementsByTagName("img");
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 2000); // Change image every 2 seconds
+      }
+    </script>
+</body>
+</html>

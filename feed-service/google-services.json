@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "796212723949",
+    "project_id": "nimmaapp",
+    "storage_bucket": "nimmaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796212723949:android:d1fd096ee9b4c148480ce4",
+        "android_client_info": {
+          "package_name": "com.feed.feedservice.service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796212723949-htlevoeikceq4hranu8i0e4040pb30di.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp7rjmASLFJmKXfnlvbFcdchXvq2v48u4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796212723949-htlevoeikceq4hranu8i0e4040pb30di.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

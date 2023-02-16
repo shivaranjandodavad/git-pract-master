@@ -1,0 +1,230 @@
+version: "3"
+services:
+  #
+  #  #Services configuration
+  #  # 1)Eureka server configuration added
+  #  eureka-server:
+  #    image: eureka-server:1.0
+  #    build: eureka-server/
+  #    container_name: eureka-server
+  #    ports:
+  #      - 8761:8761
+  #
+  #  #   2)Api gateway configuration
+  #  api-gateway:
+  #    image: api-gateway:1.0
+  #    build: api-gateway/
+  #    container_name: api-gateway
+  #    ports:
+  #      - 8080:8080
+  #    links:
+  #      - eureka-server
+  #    environment:
+  #      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+  #
+  #
+  #  #3 MySQL database configuration added
+  mysqldb:
+    image: mysql:latest
+    container_name: "mysqldb"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Pass@123
+      - MYSQL_DATABASE=mysqldb
+      - MYSQL_PASSWORD=Pass@123
+    ports:
+      - 3306:3306
+  #
+  #  # 4 chooseurmentormongodb db configuration
+  #  chooseurmentormongodb:
+  #    image: mongo:5.0
+  #    container_name: chooseurmentormongodb
+  #    environment:
+  #      - MONGO_INITDB_ROOT_USERNAME=chooseurmentor
+  #      - MONGO_INITDB_ROOT_PASSWORD=Pass@123
+  #    ports:
+  #      - 27017:27017
+  #
+  #
+  #
+  #  #5RabbitMQ configuration added
+  #  rabbitmq:
+  #    container_name: rabbitmq
+  #    image: rabbitmq:3-management
+  #    ports:
+  #      - 5672:5672
+  #      - 15672:15672
+  #    environment:
+  #      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+  #      RABBITMQ_DEFAULT_USER: "guest"
+  #      RABBITMQ_DEFAULT_PASS: "guest"
+  #
+  #
+  #  #6Authentication service configuration
+  #  user-authentication-service:
+  #    image: user-authentication-service
+  #    build: user-authentication-service/
+  #    container_name: user-authentication-service
+  #    ports:
+  #      - 8088:8088
+  #    links:
+  #      - eureka-server
+  #    environment:
+  #      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+  #    depends_on:
+  #      - chooseurmentormysqldb
+  #      - rabbitmq
+  #
+  #  #7teacher-service service configuration
+  #  teacher-service:
+  #    image: teacher-service
+  #    build: teacher-service/
+  #    container_name: teacher-service
+  #    ports:
+  #      - 8087:8087
+  #    links:
+  #      - eureka-server
+  #    environment:
+  #      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+  #    depends_on:
+  #      - chooseurmentormongodb
+  #      - rabbitmq
+  #
+  #
+  #  8 student-service service configuration
+  feed-service:
+    image: feed-service
+    build: feed-service/
+    container_name: feed-service
+    ports:
+      - 9000:9000
+    depends_on:
+      - mysqldb
+
+#
+#
+#  #  9  recommendation-service service configuration
+#  recommendation-service:
+#    image: recommendation-services
+#    build: recommendation-services/
+#    container_name: recommendation-services
+#    ports:
+#      - 8085:8085
+#    links:
+#      - eureka-server
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+#    depends_on:
+#      - chooseurmentormongodb
+#      - rabbitmq
+#
+#  #  10  chat-service service configuration
+#  chat-service:
+#    image: chat-service
+#    build: chat-service/
+#    container_name: chat-service
+#    ports:
+#      - 8081:8081
+#    links:
+#      - eureka-server
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+#    depends_on:
+#      - chooseurmentormongodb
+#      - rabbitmq
+#
+#
+#  #11 payment-service container
+#  payment-service:
+#    image: payment-service
+#    build: payment-service/
+#    container_name: payment-service
+#    ports:
+#      - 8084:8084
+#    links:
+#      - eureka-server
+#      - api-gateway
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+#
+#    depends_on:
+#      - rabbitmq
+#
+#  #12  notification-service container
+#  notification-service:
+#    image: notification-service
+#    build: notification-service/
+#    container_name: notification-service
+#    ports:
+#      - 8083:8083
+#    links:
+#      - eureka-server
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+#    depends_on:
+#      - chooseurmentormysqldb
+#
+#  #13  feedback-service container
+#  feedback-service:
+#    image: feedback-service
+#    build: feedback-service/
+#    container_name: feedback-service
+#    ports:
+#      - 8082:8082
+#    links:
+#      - eureka-server
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+#    depends_on:
+#      - chooseurmentormysqldb
+#      - rabbitmq
+#
+#
+#
+#
+#
+#  ## Prometheus
+#  prometheus:
+#    image: prom/prometheus:v2.37.1
+#    container_name: prometheus
+#    restart: always
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+#    depends_on:
+#      - payment-service
+#      - notification-service
+#      - recommendation-service
+#      - user-authentication-service
+#      - chat-service
+#      - student-service
+#      - teacher-service
+#      - feedback-service
+#
+#  grafana:
+#    image: grafana/grafana-oss:8.5.2
+#    container_name: grafana
+#    restart: always
+#    ports:
+#      - "3000:3000"
+#    links:
+#      - prometheus:prometheus
+#    volumes:
+#      - ./grafana:/var/lib/grafana
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=password
+#
+#  #Config server added
+#  config-server:
+#    image: config-server
+#    build: config-server/
+#    container_name: config-server
+#    ports:
+#      - 8888:8888
+#    links:
+#      - eureka-server
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+#
+#
